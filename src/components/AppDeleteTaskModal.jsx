@@ -1,4 +1,4 @@
-import { Fragment, useContext, useState } from 'react'
+import { Fragment, useContext } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { store } from '../store'
 import axios from '../axios'
@@ -6,14 +6,18 @@ import axios from '../axios'
 export default function AppDeleteTaskModal() {
 
     const {state, dispatch} = useContext(store)
-    const deleteTask = async () => {
+    const deleteTask = async function(){
         try {
             await axios.delete(`/todos/${state.todoId}/items/${state.id}`)
+            dispatch({type: 'setDeletedTodoId', payload: state.todoId})
+            
         } catch (error) {
             console.warn(error)
         }
         dispatch({type: 'hideDeleteModal'})
     }
+
+
   return (
     <Transition.Root show={state.isDeleteModalOpen} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={() => dispatch({type: 'hideDeleteModal'})}>
@@ -72,7 +76,6 @@ export default function AppDeleteTaskModal() {
                     type="button"
                     className="inline-flex w-full justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
                     onClick={() => {
-                        
                         deleteTask()
                     }}
                   >

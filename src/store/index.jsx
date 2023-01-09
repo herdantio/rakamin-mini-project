@@ -3,7 +3,8 @@ import React, {createContext, useReducer} from 'react';
 const initialState = {
   id: null,
   todoId: null,
-  isDeleteModalOpen: false
+  deletedTodoId: null,
+  isDeleteModalOpen: false,
 };
 const store = createContext(initialState);
 const { Provider } = store;
@@ -17,6 +18,8 @@ const StateProvider = ( { children } ) => {
         return {...state, isDeleteModalOpen:true};
       case 'setId':
         return {...state, id: action.payload.id, todoId:action.payload.todoId}
+      case 'setDeletedTodoId':
+        return {...state, deletedTodoId: action.payload};
       default:
         throw new Error();
     };
