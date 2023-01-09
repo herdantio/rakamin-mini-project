@@ -13,7 +13,8 @@ module.exports = {
         'rk-red': '#E11428',
         'rk-green-dark': '#43936C',
         'rk-neutral-40': '#FAFAFA',
-        'rk-neutral-70': '#757575'
+        'rk-neutral-70': '#757575',
+        'rk-neutral-60': '#EDEDED'
       },
     },
   },
