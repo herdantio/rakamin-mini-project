@@ -5,6 +5,7 @@ const initialState = {
   todoId: null,
   flagTodoId: null,
   isDeleteModalOpen: false,
+  todos: []
 };
 const store = createContext(initialState);
 const { Provider } = store;
@@ -20,6 +21,8 @@ const StateProvider = ( { children } ) => {
         return {...state, id: action.payload.id, todoId:action.payload.todoId}
       case 'setFlagTodoId':
         return {...state, flagTodoId: action.payload};
+      case 'setTodos':
+        return {...state, todos: action.payload};
       default:
         throw new Error();
     };

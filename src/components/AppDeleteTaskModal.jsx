@@ -10,11 +10,10 @@ export default function AppDeleteTaskModal() {
         try {
             await axios.delete(`/todos/${state.todoId}/items/${state.id}`)
             dispatch({type: 'setFlagTodoId', payload: state.todoId})
-            
+            dispatch({type: 'hideDeleteModal'})
         } catch (error) {
             console.warn(error)
         }
-        dispatch({type: 'hideDeleteModal'})
     }
 
 

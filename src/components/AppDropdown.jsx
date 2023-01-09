@@ -1,13 +1,26 @@
 import { Fragment, useContext } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import { store } from '../store'
+import axios from '../axios'
 
-export default function AppDropdown({id, todoId}) {
-  const {dispatch} = useContext(store)
+export default function AppDropdown({id, todoId, position}) {
+  const {state, dispatch} = useContext(store)
 
   const showDeleteModal = () => {
     dispatch({type: 'showDeleteModal'})
     dispatch({type: 'setId', payload: {id, todoId}})
+  }
+  
+  const moveTask = async (id, todoId, targetTodoId) => {
+    try {
+      await axios.patch(`/todos/${todoId}/items/${id}`,{
+        target_todo_id: targetTodoId
+      })
+      dispatch({type: 'setFlagTodoId', payload: 1})
+    } catch (error) {
+        console.warn(error)
+    }
+    
   }
 
   return (
@@ -31,9 +44,18 @@ export default function AppDropdown({id, todoId}) {
       >
         <Menu.Items className="absolute left-0 z-10 mt-2 w-[320px] origin-top-right rounded-md bg-white shadow-lg ">
           <div className="space-y-3 py-[14px] px-4">
-            <Menu.Item className="text-sm font-semibold hover:text-rk-green flex flex-row space-x-5">
+            <Menu.Item className={`text-sm font-semibold hover:text-rk-green flex flex-row space-x-5 ${position=='end'?'hidden':''}`}>
                 <a
-                href='#'>
+                className='cursor-pointer'
+                onClick={() => {
+                  if(position!='end'){
+                    for (let i = 0; i < state.todos.length; i++) {
+                      if(state.todos[i].id == todoId){
+                        moveTask(id, todoId, state.todos[i+1].id)
+                      }
+                    }
+                  }
+                }}>
                     <span>
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
                     <path fillRule="evenodd" d="M2 10a.75.75 0 01.75-.75h12.59l-2.1-1.95a.75.75 0 111.02-1.1l3.5 3.25a.75.75 0 010 1.1l-3.5 3.25a.75.75 0 11-1.02-1.1l2.1-1.95H2.75A.75.75 0 012 10z" clipRule="evenodd" />
@@ -44,9 +66,18 @@ export default function AppDropdown({id, todoId}) {
                     </span>
                 </a>
             </Menu.Item>
-            <Menu.Item className="text-sm font-semibold hover:text-rk-green flex flex-row space-x-5">
+            <Menu.Item className={`text-sm font-semibold hover:text-rk-green flex flex-row space-x-5 ${position=='start'?'hidden':''}`}>
                 <a
-                href='#'>
+                className='cursor-pointer'
+                onClick={() => {
+                  if(position!='start'){
+                    for (let i = 0; i < state.todos.length; i++) {
+                      if(state.todos[i].id == todoId){
+                        moveTask(id, todoId, state.todos[i-1].id)
+                      }
+                    }
+                  }
+                }}>
                     <span>
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
                     <path fillRule="evenodd" d="M18 10a.75.75 0 01-.75.75H4.66l2.1 1.95a.75.75 0 11-1.02 1.1l-3.5-3.25a.75.75 0 010-1.1l3.5-3.25a.75.75 0 111.02 1.1l-2.1 1.95h12.59A.75.75 0 0118 10z" clipRule="evenodd" />
@@ -59,7 +90,7 @@ export default function AppDropdown({id, todoId}) {
             </Menu.Item>
             <Menu.Item className="text-sm font-semibold hover:text-rk-green flex flex-row space-x-5">
                 <a
-                href='#'>
+                className='cursor-pointer'>
                     <span>
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
                     <path d="M5.433 13.917l1.262-3.155A4 4 0 017.58 9.42l6.92-6.918a2.121 2.121 0 013 3l-6.92 6.918c-.383.383-.84.685-1.343.886l-3.154 1.262a.5.5 0 01-.65-.65z" />

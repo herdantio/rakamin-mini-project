@@ -22,6 +22,7 @@ export default function useFetchItems(id) {
             setItems(res.data)
         }
             fetchData()
+            console.log(state.flagTodoId)
             dispatch({type: 'setFlagTodoId', payload: null})
     }, [state.flagTodoId])
 

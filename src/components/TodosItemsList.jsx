@@ -6,7 +6,8 @@ export default function TodosItemsList() {
     
     return (
         <div className="flex flex-row space-x-4 w-max">
-            {data.map(item => <TodosItems key={item.id} item={item}/>)}
+            {data.map((item, index) => <TodosItems position={index==0?'start':index==data.length-1?'end':'middle'}
+             key={item.id} item={item}/>)}
         </div>
     )
 }
