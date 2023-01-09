@@ -6,7 +6,7 @@ export default function TasksItemsList(props) {
         <div className="space-y-3">
             {
                 tasks.length > 0 ?
-                tasks.map(item => <TasksItems task={item} />)
+                tasks.map(item => <TasksItems  key={item.id} task={item} />)
                 :
                 <div className="text-sm py-2 px-4 bg-rk-neutral-40 rounded">
                     <span className="text-rk-neutral-70">
