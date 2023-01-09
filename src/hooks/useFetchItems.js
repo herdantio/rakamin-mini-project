@@ -9,7 +9,7 @@ export default function useFetchItems(id) {
     useEffect(() => {
         const fetchData = async () => {
             const res = await axios.get(`/todos/${id}/items`)
-            console.log(res.data.length?res.data:'kosong')
+            // console.log(res.data.length?res.data:'kosong')
             setItems(res.data)
         }
         fetchData()
