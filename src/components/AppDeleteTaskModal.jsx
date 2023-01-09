@@ -9,7 +9,7 @@ export default function AppDeleteTaskModal() {
     const deleteTask = async function(){
         try {
             await axios.delete(`/todos/${state.todoId}/items/${state.id}`)
-            dispatch({type: 'setDeletedTodoId', payload: state.todoId})
+            dispatch({type: 'setFlagTodoId', payload: state.todoId})
             
         } catch (error) {
             console.warn(error)

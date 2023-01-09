@@ -3,7 +3,7 @@ import React, {createContext, useReducer} from 'react';
 const initialState = {
   id: null,
   todoId: null,
-  deletedTodoId: null,
+  flagTodoId: null,
   isDeleteModalOpen: false,
 };
 const store = createContext(initialState);
@@ -18,8 +18,8 @@ const StateProvider = ( { children } ) => {
         return {...state, isDeleteModalOpen:true};
       case 'setId':
         return {...state, id: action.payload.id, todoId:action.payload.todoId}
-      case 'setDeletedTodoId':
-        return {...state, deletedTodoId: action.payload};
+      case 'setFlagTodoId':
+        return {...state, flagTodoId: action.payload};
       default:
         throw new Error();
     };
