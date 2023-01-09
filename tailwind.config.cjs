@@ -8,7 +8,10 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'rk-green': '#01959F'
+        'rk-green': '#01959F',
+        'rk-yellow': '#FA9810',
+        'rk-red': '#E11428',
+        'rk-green-dark': '#43936C'
       },
     },
   },
