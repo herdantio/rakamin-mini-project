@@ -11,7 +11,9 @@ module.exports = {
         'rk-green': '#01959F',
         'rk-yellow': '#FA9810',
         'rk-red': '#E11428',
-        'rk-green-dark': '#43936C'
+        'rk-green-dark': '#43936C',
+        'rk-neutral-40': '#FAFAFA',
+        'rk-neutral-70': '#757575'
       },
     },
   },
