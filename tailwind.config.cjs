@@ -9,7 +9,7 @@ module.exports = {
     extend: {
       colors: {
         'rk-green': '#01959F'
-      }
+      },
     },
   },
   plugins: [],
