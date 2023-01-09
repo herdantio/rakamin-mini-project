@@ -1,12 +1,22 @@
-import { Fragment, useState } from 'react'
+import { Fragment, useContext, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
+import { store } from '../store'
+import axios from '../axios'
 
 export default function AppDeleteTaskModal() {
-  const [open, setOpen] = useState(true)
 
+    const {state, dispatch} = useContext(store)
+    const deleteTask = async () => {
+        try {
+            await axios.delete(`/todos/${state.todoId}/items/${state.id}`)
+        } catch (error) {
+            console.warn(error)
+        }
+        dispatch({type: 'hideDeleteModal'})
+    }
   return (
-    <Transition.Root show={open} as={Fragment}>
-      <Dialog as="div" className="relative z-10" onClose={setOpen}>
+    <Transition.Root show={state.isDeleteModalOpen} as={Fragment}>
+      <Dialog as="div" className="relative z-10" onClose={() => dispatch({type: 'hideDeleteModal'})}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -35,7 +45,7 @@ export default function AppDeleteTaskModal() {
                   <button
                     type="button"
                     className="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                    onClick={() => setOpen(false)}
+                    onClick={() => dispatch({type: 'hideDeleteModal'})}
                   >
                     <span className="sr-only">Close</span>
 
@@ -61,14 +71,17 @@ export default function AppDeleteTaskModal() {
                   <button
                     type="button"
                     className="inline-flex w-full justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
-                    onClick={() => setOpen(false)}
+                    onClick={() => {
+                        
+                        deleteTask()
+                    }}
                   >
                     Delete
                   </button>
                   <button
                     type="button"
                     className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:w-auto sm:text-sm"
-                    onClick={() => setOpen(false)}
+                    onClick={() => dispatch({type: 'hideDeleteModal'})}
                   >
                     Cancel
                   </button>
