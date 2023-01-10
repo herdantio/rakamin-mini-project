@@ -16,6 +16,8 @@ module.exports = {
         'rk-neutral-70': '#757575',
         'rk-neutral-60': '#EDEDED'
       },
+      opacity: {
+      }
     },
   },
   plugins: [],

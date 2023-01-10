@@ -27,10 +27,7 @@ export default function AppTaskModal() {
             await axios.patch(`/todos/${state.todoId}/items/${state.id}`, {
                 progress_percentage: progress
             })
-            // console.log(`/todos/${state.todoId}/items/${state.id}`, {
-            //     name: name,
-            //     progress_percentage: progress
-            // })
+            
             dispatch({type: 'setTaskNameProgress', payload: {name: '', progress: 0}})
             dispatch({type: 'setFlagTodoId', payload: 1})
             dispatch({type: 'hideTaskModal'})

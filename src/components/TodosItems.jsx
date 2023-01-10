@@ -6,7 +6,7 @@ import { store } from "../store";
 import { useContext } from "react";
 
 export default function TodosItems(props) {
-    const {item, position} = props
+    const {item, position, index} = props
     const[tasks] = useFetchItems(item.id)
     const {dispatch} = useContext(store)
     const openCreateTask = () => {
@@ -14,10 +14,16 @@ export default function TodosItems(props) {
         dispatch({type: 'setTaskModalMode', payload: 'create'})
         dispatch({type: 'showTaskModal'})
     }
+    const mapping = [
+        'p-4 space-y-2 bg-rk-green/[0.1] w-[326px] rounded h-full',
+        'p-4 space-y-2 bg-rk-yellow/[0.1] w-[326px] rounded h-full',
+        'p-4 space-y-2 bg-rk-red/[0.1] w-[326px] rounded h-full',
+        'p-4 space-y-2 bg-rk-green-dark/[0.1] w-[326px] rounded h-full'
+    ]
     return (
-        <div className="p-4 space-y-2 bg-rk-green/[0.1] w-[326px] rounded h-full">
+        <div className={mapping[index%4]}>
             
-            <AppLabel text={item.title}/>
+            <AppLabel text={item.title} index={index}/>
             
             <p className="text-xs font-bold">{item.description}</p>
             
