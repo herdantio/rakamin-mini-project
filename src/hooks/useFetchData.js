@@ -5,7 +5,7 @@ import { store } from "../store";
 export default function useFetchData() {
 
     const [data, setData] = useState([])
-    const {dispatch} = useContext(store)
+    const {state, dispatch} = useContext(store)
     
     useEffect(() => {
         const fetchData = async () => {
@@ -14,7 +14,8 @@ export default function useFetchData() {
             dispatch({type: 'setTodos', payload:res.data})
         }
         fetchData()
-    }, [])
+        dispatch({type: 'setFlagTodoId', payload: null})
+    }, [state.flagTodoId])
 
     return [data]
 }
