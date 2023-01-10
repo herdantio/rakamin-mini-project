@@ -3,20 +3,20 @@ import { Dialog, Transition } from '@headlessui/react'
 import { store } from '../store'
 import axios from '../axios'
 
-export default function AppCreateTodosModal() {
+export default function AppTaskModal() {
 
     const {state, dispatch} = useContext(store)
-    const [title, setTitle] = useState('')
-    const [desc, setDesc] = useState('')
+    const [name, setName] = useState('')
+    const [progress, setProgress] = useState(0)
 
-    const createTodos = async function(){
+    const createTask = async function(todoId){
         try {
-            await axios.post(`/todos`, {
-                title: title,
-                description: desc
+            await axios.post(`/todos/${todoId}/items`, {
+                name: name,
+                progress_percentage: progress
             })
             dispatch({type: 'setFlagTodoId', payload: 1})
-            dispatch({type: 'hideCreateTodosModal'})
+            dispatch({type: 'hideTaskModal'})
         } catch (error) {
             console.warn(error)
         }
@@ -24,8 +24,8 @@ export default function AppCreateTodosModal() {
 
 
   return (
-    <Transition.Root show={state.isCreateTodosModalOpen} as={Fragment}>
-      <Dialog as="div" className="relative z-10" onClose={() => dispatch({type: 'hideCreateTodosModal'})}>
+    <Transition.Root show={state.isTaskModalOpen} as={Fragment}>
+      <Dialog as="div" className="relative z-10" onClose={() => dispatch({type: 'hideTaskModal'})}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -54,7 +54,7 @@ export default function AppCreateTodosModal() {
                   <button
                     type="button"
                     className="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                    onClick={() => dispatch({type: 'hideCreateTodosModal'})}
+                    onClick={() => dispatch({type: 'hideTaskModal'})}
                   >
                     <span className="sr-only">Close</span>
 
@@ -67,16 +67,16 @@ export default function AppCreateTodosModal() {
                 <div className="sm:flex sm:items-start">
                   <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                     <Dialog.Title className="text-lg font-bold leading-6 text-gray-900">
-                      Add New Group
+                      {state.taskModalMode == 'create' ? 'Create' : 'Edit'} Task
                     </Dialog.Title>
                     <div className="mt-2">
                       <div className='space-y-2'>
-                        <div className='text-xs'>Title</div>
-                        <input className='border-2 border-solid rounded-lg w-[372px] h-10' placeholder='placeholder' type={'text'} onChange={e=>setTitle(e.target.value)}/>
+                        <div className='text-xs font-bold'>Title</div>
+                        <input className='border-2 border-solid rounded-lg w-[372px] h-10' placeholder='Type your task' type={'text'} onChange={e=>setName(e.target.value)}/>
                       </div>
                       <div className='space-y-2 mt-5'>
-                        <div className='text-xs'>Description</div>
-                        <textarea className='border-2 border-solid rounded-lg w-[372px] h-[88px]' placeholder='placeholder' onChange={e=>setDesc(e.target.value)}/>
+                        <div className='text-xs font-bold'>Progress</div>
+                        <input className='border-2 border-solid rounded-lg h-10' placeholder='70%' type={'text'} onChange={e=>setProgress(e.target.value)}/>
                       </div>
                     </div>
                   </div>
@@ -86,7 +86,11 @@ export default function AppCreateTodosModal() {
                     type="button"
                     className="inline-flex w-full justify-center rounded-md border border-transparent bg-rk-green px-4 py-2 text-base font-medium text-white shadow-sm sm:ml-3 sm:w-auto sm:text-sm"
                     onClick={() => {
-                        createTodos()
+                        if(state.taskModalMode == 'create'){
+                            createTask(state.todoId)
+                        }else{
+
+                        }
                     }}
                   >
                     Submit
@@ -94,7 +98,7 @@ export default function AppCreateTodosModal() {
                   <button
                     type="button"
                     className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:w-auto sm:text-sm"
-                    onClick={() => dispatch({type: 'hideCreateTodosModal'})}
+                    onClick={() => dispatch({type: 'hideTaskModal'})}
                   >
                     Cancel
                   </button>

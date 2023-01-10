@@ -1,5 +1,6 @@
 import AppCreateTodosModal from "./AppCreateTodosModal"
 import AppDeleteTaskModal from "./AppDeleteTaskModal"
+import AppTaskModal from "./AppTaskModal"
 import TodosItemsList from "./TodosItemsList"
 
 
@@ -10,6 +11,7 @@ export default function AppBody() {
             <TodosItemsList/>
             <AppDeleteTaskModal/>
             <AppCreateTodosModal/>
+            <AppTaskModal/>
         </div>
     )
 }

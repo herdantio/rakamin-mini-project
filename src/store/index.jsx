@@ -6,7 +6,9 @@ const initialState = {
   flagTodoId: null,
   isDeleteModalOpen: false,
   todos: [],
-  isCreateTodosModalOpen: false
+  isCreateTodosModalOpen: false,
+  isTaskModalOpen: false,
+  taskModalMode:'create'
 };
 const store = createContext(initialState);
 const { Provider } = store;
@@ -28,6 +30,12 @@ const StateProvider = ( { children } ) => {
         return {...state, isCreateTodosModalOpen:false};
       case 'showCreateTodosModal':
         return {...state, isCreateTodosModalOpen:true};
+      case 'hideTaskModal':
+        return {...state, isTaskModalOpen:false};
+      case 'showTaskModal':
+        return {...state, isTaskModalOpen:true};
+      case 'setTaskModalMode':
+        return {...state, taskModalMode: action.payload};
       default:
         throw new Error();
     };
