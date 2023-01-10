@@ -3,12 +3,19 @@ import { Menu, Transition } from '@headlessui/react'
 import { store } from '../store'
 import axios from '../axios'
 
-export default function AppDropdown({id, todoId, position}) {
+export default function AppDropdown({id, todoId, position, name, progress}) {
   const {state, dispatch} = useContext(store)
 
   const showDeleteModal = () => {
     dispatch({type: 'showDeleteModal'})
     dispatch({type: 'setId', payload: {id, todoId}})
+  }
+
+  const showEditTaskModal = () => {
+    dispatch({type: 'setId', payload: {id, todoId}})
+    dispatch({type: 'setTaskNameProgress', payload: {name, progress}})
+    dispatch({type: 'setTaskModalMode', payload: 'edit'})
+    dispatch({type: 'showTaskModal'})
   }
   
   const moveTask = async (id, todoId, targetTodoId) => {
@@ -89,7 +96,7 @@ export default function AppDropdown({id, todoId, position}) {
                 </a>
             </Menu.Item>
             <Menu.Item className="text-sm font-semibold hover:text-rk-green flex flex-row space-x-5">
-                <a
+                <a onClick={showEditTaskModal}
                 className='cursor-pointer'>
                     <span>
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">

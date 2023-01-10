@@ -1,4 +1,4 @@
-import { Fragment, useContext, useState } from 'react'
+import { Fragment, useContext, useEffect, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { store } from '../store'
 import axios from '../axios'
@@ -8,7 +8,7 @@ export default function AppTaskModal() {
     const {state, dispatch} = useContext(store)
     const [name, setName] = useState('')
     const [progress, setProgress] = useState(0)
-
+    
     const createTask = async function(todoId){
         try {
             await axios.post(`/todos/${todoId}/items`, {
@@ -22,10 +22,30 @@ export default function AppTaskModal() {
         }
     }
 
+    const editTask = async function(){
+        try {
+            await axios.patch(`/todos/${state.todoId}/items/${state.id}`, {
+                progress_percentage: progress
+            })
+            // console.log(`/todos/${state.todoId}/items/${state.id}`, {
+            //     name: name,
+            //     progress_percentage: progress
+            // })
+            dispatch({type: 'setTaskNameProgress', payload: {name: '', progress: 0}})
+            dispatch({type: 'setFlagTodoId', payload: 1})
+            dispatch({type: 'hideTaskModal'})
+        } catch (error) {
+            console.warn(error)
+        }
+    }
+
 
   return (
     <Transition.Root show={state.isTaskModalOpen} as={Fragment}>
-      <Dialog as="div" className="relative z-10" onClose={() => dispatch({type: 'hideTaskModal'})}>
+      <Dialog as="div" className="relative z-10" onClose={() => {
+        dispatch({type: 'setTaskNameProgress', payload: {name: '', progress: 0}})
+        dispatch({type: 'hideTaskModal'})
+      }}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -54,7 +74,10 @@ export default function AppTaskModal() {
                   <button
                     type="button"
                     className="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                    onClick={() => dispatch({type: 'hideTaskModal'})}
+                    onClick={() => {
+                        dispatch({type: 'setTaskNameProgress', payload: {name: '', progress: 0}})
+                        dispatch({type: 'hideTaskModal'})
+                      }}
                   >
                     <span className="sr-only">Close</span>
 
@@ -71,7 +94,7 @@ export default function AppTaskModal() {
                     </Dialog.Title>
                     <div className="mt-2">
                       <div className='space-y-2'>
-                        <div className='text-xs font-bold'>Title</div>
+                        <div className='text-xs font-bold'>Task Name</div>
                         <input className='border-2 border-solid rounded-lg w-[372px] h-10' placeholder='Type your task' type={'text'} onChange={e=>setName(e.target.value)}/>
                       </div>
                       <div className='space-y-2 mt-5'>
@@ -89,16 +112,19 @@ export default function AppTaskModal() {
                         if(state.taskModalMode == 'create'){
                             createTask(state.todoId)
                         }else{
-
+                            editTask()
                         }
                     }}
                   >
-                    Submit
+                    Save Task
                   </button>
                   <button
                     type="button"
                     className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:w-auto sm:text-sm"
-                    onClick={() => dispatch({type: 'hideTaskModal'})}
+                    onClick={() => {
+                        dispatch({type: 'setTaskNameProgress', payload: {name: '', progress: 0}})
+                        dispatch({type: 'hideTaskModal'})
+                      }}
                   >
                     Cancel
                   </button>

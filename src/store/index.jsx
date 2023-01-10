@@ -8,7 +8,9 @@ const initialState = {
   todos: [],
   isCreateTodosModalOpen: false,
   isTaskModalOpen: false,
-  taskModalMode:'create'
+  taskModalMode:'create',
+  taskName: '',
+  taskProgress: ''
 };
 const store = createContext(initialState);
 const { Provider } = store;
@@ -36,6 +38,8 @@ const StateProvider = ( { children } ) => {
         return {...state, isTaskModalOpen:true};
       case 'setTaskModalMode':
         return {...state, taskModalMode: action.payload};
+      case 'setTaskNameProgress':
+        return {...state, taskName: action.payload.name, taskProgress: action.payload.progress};
       default:
         throw new Error();
     };

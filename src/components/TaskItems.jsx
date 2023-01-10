@@ -15,7 +15,7 @@ export default function TasksItems(props) {
                     <div className="flex flex-row justify-between">
                         <ProgressBar progress={task.progress_percentage}/>
 
-                        <AppDropdown position={position} id={task.id} todoId={task.todo_id}/>
+                        <AppDropdown position={position} id={task.id} todoId={task.todo_id} name={task.name} progress={task.progress_percentage}/>
 
                     </div>
                 </div>
